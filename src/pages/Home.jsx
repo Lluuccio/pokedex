@@ -1,82 +1,60 @@
 // src/pages/Home.jsx
 import React, { useEffect, useState } from "react";
-import logo from "../assets/logo.png";
-import Header from '../components/Header';
 import Feed from '../components/Feed';
 import LoadingScreen from "../components/LoadingScreen";
-import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const { logout } = useAuth();
-  const navigate = useNavigate();
-
   const [pokemons, setPokemons] = useState([]);
-  const [offSet, setsetOffSet] = useState(() => {
-    const storedOffSet = sessionStorage.getItem("offset");
-    return storedOffSet ? parseInt(storedOffSet, 10) : 0;
+  const [offset, setOffset] = useState(() => {
+    const stored = sessionStorage.getItem("offset");
+    return stored ? parseInt(stored, 10) : 0;
   });
   const [loading, setLoading] = useState(true);
 
   function handleNextPage() {
-    const newOffSet = offSet + 50;
-    setsetOffSet(newOffSet);
-    sessionStorage.setItem("offset", newOffSet.toString());
+    const newOffset = offset + 50;
+    setOffset(newOffset);
+    sessionStorage.setItem("offset", newOffset.toString());
   }
 
   function handlePreviousPage() {
-    const newOffSet = offSet <= 50 ? 0 : offSet - 50;
-    setsetOffSet(newOffSet);
-    sessionStorage.setItem("offset", newOffSet.toString());
+    const newOffset = offset <= 50 ? 0 : offset - 50;
+    setOffset(newOffset);
+    sessionStorage.setItem("offset", newOffset.toString());
   }
 
   useEffect(() => {
     async function fetchPokemon() {
-      const apiUrl = `https://pokeapi.co/api/v2/pokemon?limit=50&offset=${offSet}`;
-      const res = await fetch(apiUrl);
-      const data = await res.json();
-      setPokemons(data.results || []);
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
+      setLoading(true);
+      try {
+        const apiUrl = `https://pokeapi.co/api/v2/pokemon?limit=50&offset=${offset}`;
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+        setPokemons(data.results || []);
+      } catch (err) {
+        console.error("Error fetching pokemons:", err);
+        setPokemons([]);
+      } finally {
+        // court délai pour la transition, tu peux ajuster/supprimer
+        setTimeout(() => setLoading(false), 300);
+      }
     }
     fetchPokemon();
-  }, [offSet]);
-
-  useEffect(() => {
-    setLoading(true);
-  }, [offSet]);
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  }, [offset]);
 
   return (
     <div className="Home maxWidth">
-      {loading && <LoadingScreen />}
-      {!loading &&
+      {loading ? (
+        <LoadingScreen />
+      ) : (
         <>
-          {/* Header + logout */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <Header />
-            <div style={{ marginLeft: "auto", marginRight: 0 }}>
-              <button onClick={handleLogout} className="btn">
-                Logout
-              </button>
-            </div>
-          </div>
-
           <Feed pokemons={pokemons} />
-          <div className="pagination">
-            <button onClick={handlePreviousPage} className="btn">
-              Previous
-            </button>
-            <button onClick={handleNextPage} className="btn">
-              Next
-            </button>
+          <div className="pagination" style={{ display: "flex", gap: 8, justifyContent: "center", marginTop: 16 }}>
+            <button onClick={handlePreviousPage} className="btn">Previous</button>
+            <button onClick={handleNextPage} className="btn">Next</button>
           </div>
-        </>}
+        </>
+      )}
     </div>
   );
 };

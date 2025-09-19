@@ -1,5 +1,21 @@
 /* src/css/Login.css */
 
+/* ajoute en haut de src/css/Login.css */
+:root {
+  --header-height: 72px; /* garder la même valeur que Header.css si tu changes */
+}
+
+/* si header visible, on réduit la min-height. Si header caché (body.no-header), on utilise 100vh */
+.login-page {
+  min-height: calc(100vh - var(--header-height));
+}
+
+/* Si on est sur la page login et on a body.no-header, on veut le plein écran */
+body.no-header .login-page {
+  min-height: 100vh;
+}
+
+
 :root{
   --bg1: #0f172a;
   --bg2: #0b2545;

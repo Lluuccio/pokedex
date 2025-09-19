@@ -1,10 +1,39 @@
+/* src/css/Header.css */
+
+/* Reset utile */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* hauteur du header — ajuste si nécessaire */
+:root {
+  --header-height: 72px;
+}
+
 header{
     background-color:#f5f5f5;
     padding: 1rem;
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
     width: 100%;
+    height: var(--header-height);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+}
+
+/* Evite que le contenu soit masqué par le header (par défaut) */
+body {
+  padding-top: var(--header-height);
+}
+
+/* Si on est sur la page login (classe ajoutée par App), annule le padding */
+body.no-header {
+  padding-top: 0;
 }
 
 header nav{
@@ -12,6 +41,7 @@ header nav{
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
+    width: 100%;
 }
 
 header nav img{
@@ -22,6 +52,7 @@ header nav img{
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    flex: 0 1 40%;
 }
 
 .search-container input{
@@ -30,4 +61,31 @@ header nav img{
     background-color: white;
     flex: 1;
     padding: 10px;
+}
+
+.header-user{
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.header-user .welcome{
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.logout-btn{
+    background: transparent;
+    border: 1px solid rgba(0,0,0,0.12);
+    padding: 0.45rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.login-link{
+    background: transparent;
+    border: 1px solid rgba(0,0,0,0.12);
+    padding: 0.45rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
 }
