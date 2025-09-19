@@ -7,24 +7,23 @@ import Login from "./pages/Login";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import Header from "./components/Header";
+import Footer from "./components/Footer"; // <-- import
 
 const App = () => {
   const location = useLocation();
 
-  // Toggle a class on body so we can remove header padding on /login
   useEffect(() => {
     if (location.pathname === "/login") {
       document.body.classList.add("no-header");
     } else {
       document.body.classList.remove("no-header");
     }
-    // cleanup not necessary but left implicit
   }, [location.pathname]);
 
   return (
     <AuthProvider>
       <div className="App">
-        <Header /> {/* rendu une seule fois pour toute l'app */}
+        <Header />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route
@@ -44,6 +43,8 @@ const App = () => {
             }
           />
         </Routes>
+
+        <Footer /> {/* <-- affichage global du footer */}
       </div>
     </AuthProvider>
   );

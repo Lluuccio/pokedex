@@ -1,0 +1,62 @@
+/* src/css/Footer.css */
+
+/* hauteur du footer — ajuste si tu veux */
+:root {
+  --footer-height: 56px;
+}
+
+/* footer fixe en bas */
+.app-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--footer-height);
+  background: #111827; /* couleur sombre par défaut, ajuste si tu veux */
+  color: #e6eef8;
+  display: flex;
+  align-items: center;
+  z-index: 900;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  font-size: 0.95rem;
+}
+
+/* conteneur centralisé, réutilise .maxWidth si tu l'as,
+   sinon la règle suivante fera l'affaire */
+.footer-inner.maxWidth {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* si tu ne possèdes pas la classe .maxWidth déjà, décommente ce bloc:
+.footer-inner {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+*/
+
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+/* Eviter que le contenu soit masqué par le footer :
+   on ajoute un padding-bottom au body (si tu gères déjà une variable, garde-la identique) */
+body {
+  padding-bottom: var(--footer-height); /* ajuste si tu modifie --footer-height */
+}
+
+/* Si tu veux cacher le footer sur /login, tu peux ajouter une classe `no-footer` sur body (optionnel) */
+body.no-footer {
+  padding-bottom: 0;
+}
